@@ -19,8 +19,8 @@
       type: string
     - name: debug
       default: false
-      pass-false-as: --debug=False
-      pass-true-as: --debug=True
+      pass-false-as: --debug=0
+      pass-true-as: --debug=1
       type: flag
     environment: valohai-dev-debug
 - step:
