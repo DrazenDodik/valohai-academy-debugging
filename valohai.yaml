@@ -66,18 +66,3 @@
       default: SGD
       targets:
       - train.parameters.optimizer
-- pipeline:
-    name: veri-kuul-pipeline
-    edges:
-    - configuration: {}
-      source: fetch-data.outputs.images/023*.pkl
-      target: tra in.inputs.images
-    nodes:
-    - name: fetch-data
-      on-error: stop-all
-      step: fetch-data
-      type: execution
-    - name: train
-      on-error: stop-all
-      step: train
-      type: execution
