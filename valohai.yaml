@@ -10,7 +10,7 @@
     - python train-model.py {parameters}
     parameters:
     - name: epochs
-      default: 1
+      default: 2
       optional: false
       type: integer
     - name: optimizer
@@ -22,7 +22,6 @@
       pass-false-as: --debug=0
       pass-true-as: --debug=1
       type: flag
-    environment: valohai-dev-debug
 - step:
     name: inference
     image: docker.io/ultralytics/ultralytics:8.0.180-python
@@ -41,28 +40,25 @@
     - python ./inference.py {parameters}
 - pipeline:
     name: training-inference-pipeline
+    parameters:
+      - name: optimizer
+        default: SGD
+        targets:
+        - train.parameters.optimizer
     edges:
-    - configuration: {}
-      source: determine.metadata.epochs
-      target: train.parameters.epochs
-    - configuration: {}
-      source: train.output.best.onnx
-      target: inference.input.model
+      - [determine.metadata.epochs, train.parameters.epochs]
+      - [train.output.best.onnx, inference.input.model]
     nodes:
     - name: determine
-      on-error: stop-all
       step: determine
       type: execution
     - name: train
-      on-error: stop-all
       step: yolo
-      type: task
+      type: execution
     - name: inference
-      on-error: stop-all
       step: inference
       type: execution
-    parameters:
-    - name: optimizer
-      default: SGD
-      targets:
-      - train.parameters.optimizer
+      actions:
+        - when: node-complete
+          if: metadata.precision(B) <= 0.6
+          then: stop-pipeline

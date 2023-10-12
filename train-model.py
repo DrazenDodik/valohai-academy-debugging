@@ -12,12 +12,12 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--epochs', type=int, default=2)
     parser.add_argument('--optimizer', type=str, default='SGD')
-    parser.add_argument('--debug', type=bool, default=False)
+    parser.add_argument('--debug', type=int, default=0)
     return parser.parse_args()
 
 args = parse_args()
 
-if args.debug:
+if args.debug is 1:
     # The script is halted here, until a debugger is attached
     debugpy.wait_for_client()
 
@@ -25,13 +25,10 @@ if args.debug:
 def print_valohai_metrics(trainer):
     metadata = {
         "epoch": trainer.epoch,
+        "mAP50-95(B)": trainer.metrics["metrics/mAP50-95(B)"],
+        "mAP50(B)": trainer.metrics["metrics/mAP50(B)"],
+        "recall": trainer.metrics["metrics/recall)"]
     }
-    # Loop through the metrics
-    for metric in trainer.metrics:
-        metric_name = metric.split("metrics/")[-1]
-        metric_value = trainer.metrics[metric]
-
-        metadata[metric_name] = metric_value
 
     print(json.dumps(metadata))
 
@@ -48,4 +45,4 @@ model.train(data="coco128.yaml", epochs=args.epochs, optimizer=args.optimizer, v
 exported_model = model.export(format="onnx")  # export the model to ONNX format
 
 # Valohai: Copy the exported model to the Valohai outputs directory
-shutil.copy(exported_model, '/valohai/outputs/model')
+shutil.copy(exported_model, '/valohai/outputs/model.onnx')
