@@ -47,7 +47,7 @@
         - train.parameters.optimizer
     edges:
       - [determine.metadata.epochs, train.parameters.epochs]
-      - [train.output.best.onnx, inference.input.model]
+      - [train.output.model.onnx, inference.input.model]
     nodes:
     - name: determine
       step: determine
