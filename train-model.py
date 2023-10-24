@@ -27,7 +27,7 @@ def print_valohai_metrics(trainer):
         "epoch": trainer.epoch,
         "mAP50-95(B)": trainer.metrics["metrics/mAP50-95(B)"],
         "mAP50(B)": trainer.metrics["metrics/mAP50(B)"],
-        "recall": trainer.metrics["metrics/recall)"]
+        "recall": trainer.metrics["metrics/recall"]
     }
 
     print(json.dumps(metadata))
