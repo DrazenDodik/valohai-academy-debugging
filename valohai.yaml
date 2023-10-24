@@ -55,10 +55,10 @@
     - name: train
       step: yolo
       type: execution
-    - name: inference
-      step: inference
-      type: execution
       actions:
         - when: node-complete
           if: metadata.precision(B) <= 0.6
           then: stop-pipeline
+    - name: inference
+      step: inference
+      type: execution
