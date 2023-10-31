@@ -19,7 +19,7 @@ def print_valohai_metrics(trainer):
         "epoch": trainer.epoch,
         "mAP50-95": trainer.metrics["metrics/mAP50-95(B)"],
         "mAP50": trainer.metrics["metrics/mAP50(B)"],
-        "precision": 0 # TODO: Include precision metric
+        "precision":trainer.metrics["metrics/precision(B)"]
     }
 
     print(json.dumps(metadata))
