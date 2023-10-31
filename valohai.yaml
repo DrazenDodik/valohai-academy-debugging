@@ -2,9 +2,11 @@
     name: determine
     image: python:3.10
     command: python determine-epochs.py
+    environment: aws-eu-west-1-c5.2xlarge
 - step:
     name: yolo
     image: docker.io/ultralytics/ultralytics:8.0.180-python
+    environment: aws-eu-west-1-p3.2xlarge
     command:
     - pip install debugpy
     - python train-model.py {parameters}
@@ -26,18 +28,13 @@
     name: inference
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command: python inference.py
+    environment: aws-eu-west-1-c5.2xlarge
     inputs:
     - name: model
       optional: false
     - name: images
       default: https://ultralytics.com/images/bus.jpg
       optional: false
-- step:
-    name: test
-    image: python:3.7
-    command:
-    - pip install -r requirements.txt
-    - python ./inference.py {parameters}
 - pipeline:
     name: training-inference-pipeline
     parameters:
