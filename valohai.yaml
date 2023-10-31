@@ -57,7 +57,7 @@
       type: execution
       actions:
         - when: node-complete
-          if: metadata.precision(B) <= 0.6
+          if: metadata.precision <= 0.5
           then: stop-pipeline
     - name: inference
       step: inference
